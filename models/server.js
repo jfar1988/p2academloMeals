@@ -10,7 +10,6 @@ const initModel = require('./initModel');
 const appError = require('../helpers/appError');
 const morgan = require('morgan');
 const globalErrorHandler = require('../controllers/error.controller');
-const { reviewsRouter } = require('../routes/reviews.routes');
 
 class Server {
   //1
@@ -26,7 +25,6 @@ class Server {
       restaurant: '/api/v1/restaurant',
       meal: '/api/v1/meals',
       order: '/api/v1/orders',
-      review: '/api/v1/reviews',
     };
 
     //Connect to db
@@ -55,7 +53,6 @@ class Server {
     this.app.use(this.path.restaurant, restaurantRouter);
     this.app.use(this.path.meal, mealsRouter);
     this.app.use(this.path.order, ordersRouter);
-    this.app.use(this.path.review, reviewsRouter);
 
     this.app.all('*', (req, res, next) => {
       return next(
@@ -82,7 +79,7 @@ class Server {
   //5
   listen() {
     this.app.listen(this.port, () => {
-      console.log('Server Running On Por', this.port);
+      console.log('Server Running On Port', this.port);
     });
   }
 }

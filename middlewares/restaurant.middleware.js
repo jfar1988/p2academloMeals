@@ -11,7 +11,6 @@ exports.validRestaurantById = catchAsync(async (req, res, next) => {
       status: 'active',
     },
   });
-  console.log(restaurant);
 
   if (!restaurant) {
     return next(new appError('Restaurant not found', 404));
