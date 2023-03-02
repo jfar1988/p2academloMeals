@@ -31,4 +31,4 @@ const Order = db.define('order', {
   },
 });
 
-exports.module = Order;
+module.exports = Order;

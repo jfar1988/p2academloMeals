@@ -1,4 +1,4 @@
-const appError = require('../utils/appError');
+const appError = require('../helpers/appError');
 
 /**
  * If the data type sent to the server does not match what was expected, then return a new appError

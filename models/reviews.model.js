@@ -35,4 +35,4 @@ const Review = db.define('review', {
   },
 });
 
-exports.module = Review;
+module.exports = Review;
