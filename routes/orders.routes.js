@@ -5,8 +5,6 @@ const { protect } = require('../middlewares/auth.middlewares');
 
 const router = Router();
 
-router.use(protect);
-
 router.post('/', protect, createOrder);
 
 module.exports = {

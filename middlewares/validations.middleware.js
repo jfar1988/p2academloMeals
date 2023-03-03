@@ -19,7 +19,7 @@ exports.updateUserValidation = [
 exports.createRestaurantValidation = [
   check('name', 'the name is required').not().isEmpty(),
   check('address', 'the address is required').not().isEmpty(),
-  check('price', 'the rating is required').not().isEmpty(),
+  check('rating', 'the rating is required').not().isEmpty(),
   check('rating', 'the rating is required').isNumeric(),
 ];
 
