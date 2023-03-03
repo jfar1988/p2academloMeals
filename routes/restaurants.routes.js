@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { restrictTo } = require('../controllers/auth.controller');
 const {
   createRestaurant,
   findRestaurant,
@@ -26,7 +27,6 @@ const {
 const router = Router();
 
 router.post('/', createRestaurantValidation, validateFields, createRestaurant);
-// restrictTo('admin'), falta implementar
 
 router.get('/', validateFields, findAllRestaurants);
 
@@ -44,6 +44,7 @@ router.post(
   validateFields,
   validateFields,
   validRestaurantById,
+  restrictTo('admin'),
   createReview
 );
 
@@ -54,6 +55,7 @@ router.patch(
   validRestaurantByIdReview,
   validExistReview,
   protectAccountOwner,
+  restrictTo('admin'),
   updateReview
 );
 
@@ -63,6 +65,7 @@ router.delete(
   validRestaurantByIdReview,
   validExistReview,
   protectAccountOwner,
+  restrictTo('admin'),
   deleteReview
 );
 
