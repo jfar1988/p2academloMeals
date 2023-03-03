@@ -28,8 +28,7 @@ exports.findMeals = catchAsync(async (req, res, next) => {
 });
 exports.findMealsForId = catchAsync(async (req, res, next) => {
   const { meal } = req;
-  console.log(meal);
-  //enviamos respuesta al usuario
+
   return res.status(201).json({
     status: 'SUCCESS',
     message: `meal was successfully brought`,

@@ -33,3 +33,41 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     order,
   });
 });
+
+exports.updateOrder = catchAsync(async (req, res, next) => {
+  const { order } = req;
+
+  if (!order) {
+    res.status(401).json({
+      status: 'error',
+      message: 'there is no order for this user',
+    });
+  }
+
+  const orderUpdate = await order.update({ status: 'completed' });
+
+  return res.status(201).json({
+    status: 'SUCCESS',
+    message: `the order has been completed successfully`,
+    orderUpdate,
+  });
+});
+
+exports.deleteOrder = catchAsync(async (req, res, next) => {
+  const { order } = req;
+
+  if (!order) {
+    res.status(401).json({
+      status: 'error',
+      message: 'there is no order for this user',
+    });
+  }
+
+  const orderDelete = await order.update({ status: 'cancelled' });
+
+  return res.status(201).json({
+    status: 'SUCCESS',
+    message: `the order has been cancelled successfully`,
+    orderDelete,
+  });
+});

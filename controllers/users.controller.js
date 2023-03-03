@@ -25,7 +25,6 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   });
 });
 
-//revisar
 exports.getOrders = catchAsync(async (req, res, next) => {
   const { sessionUser } = req;
 
@@ -42,39 +41,25 @@ exports.getOrders = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
+    status: 'Success',
+    message: 'The users were successfully found',
     user,
   });
 });
 
-// Sin revisar
-exports.getOrder = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const { sessionUser } = req;
-  //TODO: acordarme de hacer esta mejora o esta refactorización
-  const order = await Order.findOne({
-    where: {
-      userId: sessionUser.id,
-      id,
-      status: true,
-    },
-    include: [
-      {
-        model: Cart,
-        where: {
-          status: 'purchased',
-        },
-        include: [
-          {
-            model: ProductInCart,
-            where: {
-              status: 'purchased',
-            },
-          },
-        ],
-      },
-    ],
-  });
+exports.getOrderById = catchAsync(async (req, res, next) => {
+  const { order } = req;
+
+  if (!order) {
+    res.status(400).json({
+      status: 'Error',
+      message: 'The order was not found',
+    });
+  }
+
   res.status(200).json({
+    status: 'Success',
+    message: 'The order were successfully found',
     order,
   });
 });
