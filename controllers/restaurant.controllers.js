@@ -50,23 +50,45 @@ exports.deleteRestaurant = catchAsync(async (req, res, next) => {
 });
 exports.createReview = catchAsync(async (req, res, next) => {
   const { comment, rating } = req.body;
-  const { userId } = req.sessionUser;
-  const { id } = req.params;
+  const { id } = req.sessionUser;
+  const { restaurant } = req;
 
   const review = await Review.create({
     comment,
     rating,
-    userId,
-    restaurantId: id,
-    where: {
-      status: true,
-    },
-    include: [{ model: Restaurant, where: { id } }],
+    userId: id,
+    restaurantId: restaurant.id,
   });
 
   res.status(201).json({
     status: 'success',
     message: 'Review created successfully',
     review,
+  });
+});
+
+exports.updateReview = catchAsync(async (req, res, next) => {
+  const { review } = req;
+  const { comment, rating } = req.body;
+
+  await review.update({
+    comment,
+    rating,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'The review has been update',
+  });
+});
+
+exports.deleteReview = catchAsync(async (req, res, next) => {
+  const { review } = req;
+
+  await review.update({ status: false });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'The review has been delete',
   });
 });

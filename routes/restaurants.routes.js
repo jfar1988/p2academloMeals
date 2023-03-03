@@ -1,28 +1,34 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
 const {
   createRestaurant,
   findRestaurant,
   findAllRestaurants,
   deleteRestaurant,
   createReview,
+  updateReview,
+  deleteReview,
 } = require('../controllers/restaurant.controllers');
-const { protect } = require('../middlewares/auth.middlewares');
-const { validRestaurantById } = require('../middlewares/restaurant.middleware');
+const {
+  protect,
+  protectAccountOwner,
+} = require('../middlewares/auth.middlewares');
+const {
+  validRestaurantById,
+  validRestaurantByIdReview,
+} = require('../middlewares/restaurant.middleware');
+const { validExistReview } = require('../middlewares/review.middleware');
+const { validateFields } = require('../middlewares/validateField.middlewares');
+const {
+  createReviewValidation,
+  createRestaurantValidation,
+} = require('../middlewares/validations.middleware');
 
 const router = Router();
 
-router.post(
-  '/',
-  [
-    check('name', 'The name is required').not().isEmpty(),
-    check('address', 'The address is required').not().isEmpty(),
-  ],
-  createRestaurant
-);
+router.post('/', createRestaurantValidation, validateFields, createRestaurant);
 // restrictTo('admin'), falta implementar
 
-router.get('/', findAllRestaurants);
+router.get('/', validateFields, findAllRestaurants);
 
 router.get('/:id', validRestaurantById, findRestaurant);
 
@@ -33,13 +39,31 @@ router.use(protect);
 
 router.post(
   '/reviews/:id',
-  [
-    check('comment', 'The comment is required').not().isEmpty(),
-    check('rating', 'The rating is required').not().isEmpty(),
-  ],
   protect,
+  createReviewValidation,
+  validateFields,
+  validateFields,
   validRestaurantById,
   createReview
+);
+
+router.patch(
+  '/reviews/:restaurantId/:id',
+  createReviewValidation,
+  validateFields,
+  validRestaurantByIdReview,
+  validExistReview,
+  protectAccountOwner,
+  updateReview
+);
+
+router.delete(
+  '/reviews/:restaurantId/:id',
+  validateFields,
+  validRestaurantByIdReview,
+  validExistReview,
+  protectAccountOwner,
+  deleteReview
 );
 
 module.exports = {
